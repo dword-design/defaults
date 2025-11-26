@@ -17,9 +17,15 @@ test.describe('value', () => {
   });
 
   test('null', () => {
-    const result = self(null, 1 as const);
+    const result = self(null, 1);
     expect(result).toEqual(null);
     expectTypeOf(result).toEqualTypeOf<null>();
+  });
+
+  test('relaxed type', () => {
+    const result = self(2, 1);
+    expect(result).toEqual(2);
+    expectTypeOf(result).toEqualTypeOf<number>();
   });
 });
 
@@ -48,10 +54,22 @@ test.describe('object', () => {
     expectTypeOf(result).toEqualTypeOf<{ a: { b: 2 } }>();
   });
 
-  test('arrays/tuples', () => {
+  test('tuples', () => {
     const result = self({ a: [2] as const }, { a: [1] as const });
     expect(result).toEqual({ a: [1, 2] });
-    expectTypeOf(result.a).toMatchTypeOf<readonly [1, 2]>();
+    expectTypeOf(result.a).toMatchTypeOf<[1, 2]>();
+  });
+
+  test('arrays', () => {
+    const result = self({ a: [2] }, { a: [1] });
+    expect(result).toEqual({ a: [1, 2] });
+    expectTypeOf(result.a).toMatchTypeOf<number[]>();
+  });
+
+  test('arrays mixed types', () => {
+    const result = self({ a: ['foo'] }, { a: [1] });
+    expect(result).toEqual({ a: [1, 2] });
+    expectTypeOf(result.a).toMatchTypeOf<Array<number | string>>();
   });
 
   test('mixed properties', () => {
