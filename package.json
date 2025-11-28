@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "private": true,
+  "name": "@dword-design/defaults",
+  "version": "0.0.0",
   "repository": "dword-design/defaults",
   "funding": "https://github.com/sponsors/dword-design",
   "license": "MIT",
