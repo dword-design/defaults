@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      is-plain-obj:
+        specifier: ^4.1.0
+        version: 4.1.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21

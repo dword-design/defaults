@@ -29,6 +29,7 @@
     "verify": "base verify"
   },
   "dependencies": {
+    "is-plain-obj": "^4.1.0",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {

@@ -68,7 +68,7 @@ test.describe('object', () => {
 
   test('arrays mixed types', () => {
     const result = self({ a: ['foo'] }, { a: [1] });
-    expect(result).toEqual({ a: [1, 2] });
+    expect(result).toEqual({ a: [1, 'foo'] });
     expectTypeOf(result.a).toMatchTypeOf<Array<number | string>>();
   });
 
@@ -80,5 +80,48 @@ test.describe('object', () => {
 
     expect(result).toEqual({ a: 1, b: 2, c: 4 });
     expectTypeOf(result).toEqualTypeOf<{ a: 1; b: 2; c: 4 }>();
+  });
+});
+
+test.describe('edge cases', () => {
+  test('empty arrays', () => {
+    const result = self({ a: [] }, { a: [1, 2] });
+    expect(result).toEqual({ a: [1, 2] });
+  });
+
+  test('array vs non-array', () => {
+    const result = self({ a: [1] }, { a: 'string' });
+    expect(result).toEqual({ a: [1] });
+  });
+
+  test('non-array vs array', () => {
+    const result = self({ a: 'string' }, { a: [1] });
+    expect(result).toEqual({ a: 'string' });
+  });
+
+  test('Date objects', () => {
+    const date1 = new Date('2025-01-01');
+    const date2 = new Date('2024-01-01');
+    const result = self({ a: date1 }, { a: date2 });
+    expect(result).toEqual({ a: date1 });
+    expect(result.a).toBe(date1);
+  });
+
+  test('RegExp objects', () => {
+    const regex1 = /foo/;
+    const regex2 = /bar/;
+    const result = self({ a: regex1 }, { a: regex2 });
+    expect(result).toEqual({ a: regex1 });
+    expect(result.a).toBe(regex1);
+  });
+
+  test('deeply nested undefined', () => {
+    const result = self(
+      { a: { b: { c: undefined } } },
+      { a: { b: { c: 1 as const } } },
+    );
+
+    expect(result).toEqual({ a: { b: { c: 1 } } });
+    expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
   });
 });
