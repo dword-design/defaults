@@ -1,5 +1,5 @@
 import isPlainObj from 'is-plain-obj';
-import { mapValues, pickBy } from 'lodash-es';
+import { union } from 'lodash-es';
 
 type DeepMerge<TValue, TDefault> = TValue extends null
   ? null
@@ -36,27 +36,12 @@ const merge = <TValue, TDefault>(
   }
 
   if (isPlainObj(value) && isPlainObj(defaultValue)) {
-    const valueWithoutUndefined = pickBy(
-      value,
-      objectValue => objectValue !== undefined,
-    );
-
-    const valueUndefined = pickBy(
-      value,
-      objectValue => objectValue === undefined,
-    );
-
-    return {
-      ...valueUndefined,
-      ...defaultValue,
-      ...mapValues(valueWithoutUndefined, (objectValue, key) =>
-        typeof defaultValue === 'object' &&
-        defaultValue !== null &&
-        key in defaultValue
-          ? merge(objectValue, (defaultValue as Record<string, unknown>)[key])
-          : objectValue,
-      ),
-    } as DeepMerge<TValue, TDefault>;
+    return Object.fromEntries(
+      union(Object.keys(value), Object.keys(defaultValue)).map(key => [
+        key,
+        merge(value[key], defaultValue[key]),
+      ]),
+    ) as DeepMerge<TValue, TDefault>;
   }
 
   return value as DeepMerge<TValue, TDefault>;
