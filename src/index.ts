@@ -59,7 +59,7 @@ const mergeTwo = <TValue, TDefault>(
 export default <T extends unknown[]>(...args: T): DeepMergeMultiple<T> => {
   let result: unknown = undefined;
 
-  for (const current of args) {
+  for (const current of args.reverse()) {
     result = mergeTwo(current, result);
   }
 
