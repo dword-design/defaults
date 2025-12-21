@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/dword-design/defaults/compare/v1.0.0...v1.0.1) (2025-12-21)
+
+
+### Bug Fixes
+
+* fix class instances ([a6096a1](https://github.com/dword-design/defaults/commit/a6096a12d43e423d2cf156176dfd2c93031292a9))
+
 # 1.0.0 (2025-11-28)
 
 
