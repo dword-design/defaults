@@ -121,7 +121,6 @@ test.describe('edge cases', () => {
 
 test('more than two arguments', () => {
   const result = self(1, 'a', null);
-
   expect(result).toEqual(1);
   expectTypeOf(result).toEqualTypeOf<number>();
 });
