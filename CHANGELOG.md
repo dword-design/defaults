@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/dword-design/defaults/compare/v1.0.1...v1.1.0) (2025-12-21)
+
+
+### Features
+
+* arbitrary args ([#1](https://github.com/dword-design/defaults/issues/1)) ([7dd0934](https://github.com/dword-design/defaults/commit/7dd093447924603466ea18f8d7f7a4a24e20e0f2))
+
 ## [1.0.1](https://github.com/dword-design/defaults/compare/v1.0.0...v1.0.1) (2025-12-21)
 
 
