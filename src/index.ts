@@ -23,10 +23,14 @@ type DeepMerge<TValue, TDefault> = TValue extends null
         ? TDefault
         : TValue;
 
-type DeepMergeMultiple<T extends unknown[]> =
-  T extends [infer T1, ...infer TRest]
-    ? DeepMergeMultiple<[DeepMerge<T1, ...DeepMergeMultiple<TRest>]>
-    : T;
+type DeepMergeMultiple<T extends unknown[]> = T extends [
+  infer T1,
+  ...infer TRest,
+]
+  ? TRest extends unknown[]
+    ? DeepMerge<T1, DeepMergeMultiple<TRest>>
+    : T1
+  : unknown;
 
 const mergeTwo = <TValue, TDefault>(
   value: TValue,
@@ -52,4 +56,12 @@ const mergeTwo = <TValue, TDefault>(
   return value as DeepMerge<TValue, TDefault>;
 };
 
-export default <T extends unknown[]>(...args: T): DeepMergeMultiple<T> => args.reduce((acc, current) => mergeTwo(current, acc));
+export default <T extends unknown[]>(...args: T): DeepMergeMultiple<T> => {
+  let result: unknown = undefined;
+
+  for (const current of args) {
+    result = mergeTwo(current, result);
+  }
+
+  return result as DeepMergeMultiple<T>;
+};
