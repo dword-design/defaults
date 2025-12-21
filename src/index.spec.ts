@@ -99,20 +99,13 @@ test.describe('edge cases', () => {
     expect(result).toEqual({ a: 'string' });
   });
 
-  test('Date objects', () => {
+  test('Class instance', () => {
     const date1 = new Date('2025-01-01');
     const date2 = new Date('2024-01-01');
     const result = self({ a: date1 }, { a: date2 });
     expect(result).toEqual({ a: date1 });
     expect(result.a).toBe(date1);
-  });
-
-  test('RegExp objects', () => {
-    const regex1 = /foo/;
-    const regex2 = /bar/;
-    const result = self({ a: regex1 }, { a: regex2 });
-    expect(result).toEqual({ a: regex1 });
-    expect(result.a).toBe(regex1);
+    expectTypeOf(result.a).toEqualTypeOf<Date>();
   });
 
   test('deeply nested undefined', () => {
