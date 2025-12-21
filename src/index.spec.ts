@@ -81,6 +81,15 @@ test.describe('object', () => {
     expect(result).toEqual({ a: 1, b: 2, c: 4 });
     expectTypeOf(result).toEqualTypeOf<{ a: 1; b: 2; c: 4 }>();
   });
+
+  test('class instance', () => {
+    const date1 = new Date('2025-01-01');
+    const date2 = new Date('2024-01-01');
+    const result = self({ a: date1 }, { a: date2 });
+    expect(result).toEqual({ a: date1 });
+    expect(result.a).toBe(date1);
+    expectTypeOf(result.a).toEqualTypeOf<Date>();
+  });
 });
 
 test.describe('edge cases', () => {
@@ -99,15 +108,6 @@ test.describe('edge cases', () => {
     expect(result).toEqual({ a: 'string' });
   });
 
-  test('Class instance', () => {
-    const date1 = new Date('2025-01-01');
-    const date2 = new Date('2024-01-01');
-    const result = self({ a: date1 }, { a: date2 });
-    expect(result).toEqual({ a: date1 });
-    expect(result.a).toBe(date1);
-    expectTypeOf(result.a).toEqualTypeOf<Date>();
-  });
-
   test('deeply nested undefined', () => {
     const result = self(
       { a: { b: { c: undefined } } },
@@ -117,4 +117,11 @@ test.describe('edge cases', () => {
     expect(result).toEqual({ a: { b: { c: 1 } } });
     expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
   });
+});
+
+test('more than two arguments', () => {
+  const result = self(1, 'a', null);
+
+  expect(result).toEqual(1);
+  expectTypeOf(result).toEqualTypeOf<number>();
 });

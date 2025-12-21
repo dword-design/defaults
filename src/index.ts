@@ -23,7 +23,12 @@ type DeepMerge<TValue, TDefault> = TValue extends null
         ? TDefault
         : TValue;
 
-const merge = <TValue, TDefault>(
+type DeepMergeMultiple<T extends unknown[]> =
+  T extends [infer T1, ...infer TRest]
+    ? DeepMergeMultiple<[DeepMerge<T1, ...DeepMergeMultiple<TRest>]>
+    : T;
+
+const mergeTwo = <TValue, TDefault>(
   value: TValue,
   defaultValue: TDefault,
 ): DeepMerge<TValue, TDefault> => {
@@ -39,7 +44,7 @@ const merge = <TValue, TDefault>(
     return Object.fromEntries(
       union(Object.keys(value), Object.keys(defaultValue)).map(key => [
         key,
-        merge(value[key], defaultValue[key]),
+        mergeTwo(value[key], defaultValue[key]),
       ]),
     ) as DeepMerge<TValue, TDefault>;
   }
@@ -47,4 +52,4 @@ const merge = <TValue, TDefault>(
   return value as DeepMerge<TValue, TDefault>;
 };
 
-export default merge;
+export default <T extends unknown[]>(...args: T): DeepMergeMultiple<T> => args.reduce((acc, current) => mergeTwo(current, acc));
