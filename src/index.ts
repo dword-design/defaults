@@ -7,8 +7,8 @@ type DeepMerge<TValue, TDefault> = TValue extends null
     ? TDefault extends readonly unknown[]
       ? [...TDefault, ...TValue]
       : TValue
-    : TValue extends Record<string, unknown>
-      ? TDefault extends Record<string, unknown>
+    : TValue extends Record<string, any>
+      ? TDefault extends Record<string, any>
         ? {
             [TKey in keyof TValue | keyof TDefault]: TKey extends keyof TValue
               ? TKey extends keyof TDefault

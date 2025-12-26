@@ -117,6 +117,17 @@ test.describe('edge cases', () => {
     expect(result).toEqual({ a: { b: { c: 1 } } });
     expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
   });
+
+  test('interface and object', () => {
+    interface Inter {
+      foo?: string;
+    }
+    const obj: Inter = {};
+    const result = self(obj, { foo: 'bar' as const });
+    expect(result).toEqual({ foo: 'bar' });
+    expectTypeOf(result).toEqualTypeOf<{ foo: string }>();
+    expectTypeOf(result.foo).toEqualTypeOf<string>();
+  });
 });
 
 test('more than two arguments', () => {
