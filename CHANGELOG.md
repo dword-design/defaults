@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/dword-design/defaults/compare/v1.1.0...v1.1.1) (2025-12-26)
+
+
+### Bug Fixes
+
+* fix interfaces ([#2](https://github.com/dword-design/defaults/issues/2)) ([71acf8f](https://github.com/dword-design/defaults/commit/71acf8f9dbde6c98adb87790cf7cdbe004a0b6c5))
+
 # [1.1.0](https://github.com/dword-design/defaults/compare/v1.0.1...v1.1.0) (2025-12-21)
 
 
