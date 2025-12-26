@@ -7,17 +7,17 @@ type DeepMerge<TValue, TDefault> = TValue extends null
     ? TDefault extends readonly unknown[]
       ? [...TDefault, ...TValue]
       : TValue
-    : TValue extends Record<string, any>
-      ? TDefault extends Record<string, any>
-        ? {
-            [TKey in keyof TValue | keyof TDefault]: TKey extends keyof TValue
-              ? TKey extends keyof TDefault
-                ? DeepMerge<TValue[TKey], TDefault[TKey]>
-                : TValue[TKey]
-              : TKey extends keyof TDefault
-                ? TDefault[TKey]
-                : never;
-          }
+    : TValue extends object // TODO: https://github.com/microsoft/TypeScript/issues/29063
+      ? TDefault extends object
+        ? TValue extends TDefault
+          ? TValue
+          : Omit<TValue, keyof TValue & keyof TDefault> &
+              Omit<TDefault, keyof TValue & keyof TDefault> & {
+                -readonly [Key in keyof TValue & keyof TDefault]: DeepMerge<
+                  TValue[Key],
+                  TDefault[Key]
+                >;
+              }
         : TValue
       : TValue extends undefined
         ? TDefault

@@ -57,19 +57,19 @@ test.describe('object', () => {
   test('tuples', () => {
     const result = self({ a: [2] as const }, { a: [1] as const });
     expect(result).toEqual({ a: [1, 2] });
-    expectTypeOf(result.a).toMatchTypeOf<[1, 2]>();
+    expectTypeOf(result.a).toEqualTypeOf<[1, 2]>();
   });
 
   test('arrays', () => {
     const result = self({ a: [2] }, { a: [1] });
     expect(result).toEqual({ a: [1, 2] });
-    expectTypeOf(result.a).toMatchTypeOf<number[]>();
+    expectTypeOf(result.a).toEqualTypeOf<number[]>();
   });
 
   test('arrays mixed types', () => {
     const result = self({ a: ['foo'] }, { a: [1] });
     expect(result).toEqual({ a: [1, 'foo'] });
-    expectTypeOf(result.a).toMatchTypeOf<Array<number | string>>();
+    expectTypeOf(result.a).toEqualTypeOf<Array<number | string>>();
   });
 
   test('mixed properties', () => {
@@ -125,7 +125,11 @@ test.describe('edge cases', () => {
     const obj: Inter = {};
     const result = self(obj, { foo: 'bar' as const });
     expect(result).toEqual({ foo: 'bar' });
-    expectTypeOf(result).toEqualTypeOf<{ foo: string }>();
+
+    expectTypeOf(result).toEqualTypeOf<
+      Omit<Inter, 'foo'> & Omit<{ foo: 'bar' }, 'foo'> & { foo: string }
+    >();
+
     expectTypeOf(result.foo).toEqualTypeOf<string>();
   });
 });
