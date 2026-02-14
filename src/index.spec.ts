@@ -27,6 +27,15 @@ test.describe('value', () => {
     expect(result).toEqual(2);
     expectTypeOf(result).toEqualTypeOf<number>();
   });
+
+  test('function', () => {
+    const result = self(
+      (arg: string) => console.log(arg),
+      () => {},
+    );
+
+    result('foo');
+  });
 });
 
 test.describe('object', () => {

@@ -3,25 +3,29 @@ import { union } from 'lodash-es';
 
 type DeepMerge<TValue, TDefault> = TValue extends null
   ? null
-  : TValue extends readonly unknown[]
-    ? TDefault extends readonly unknown[]
-      ? [...TDefault, ...TValue]
-      : TValue
-    : TValue extends object // TODO: https://github.com/microsoft/TypeScript/issues/29063
-      ? TDefault extends object
-        ? TValue extends TDefault
-          ? TValue
-          : Omit<TValue, keyof TValue & keyof TDefault> &
-              Omit<TDefault, keyof TValue & keyof TDefault> & {
-                -readonly [Key in keyof TValue & keyof TDefault]: DeepMerge<
-                  TValue[Key],
-                  TDefault[Key]
-                >;
-              }
+  : /* eslint-disable @typescript-eslint/no-unsafe-function-type */
+    TValue extends Function
+    ? /* eslint-enable @typescript-eslint/no-unsafe-function-type */
+      TValue
+    : TValue extends readonly unknown[]
+      ? TDefault extends readonly unknown[]
+        ? [...TDefault, ...TValue]
         : TValue
-      : TValue extends undefined
-        ? TDefault
-        : TValue;
+      : TValue extends object // TODO: https://github.com/microsoft/TypeScript/issues/29063
+        ? TDefault extends object
+          ? TValue extends TDefault
+            ? TValue
+            : Omit<TValue, keyof TValue & keyof TDefault> &
+                Omit<TDefault, keyof TValue & keyof TDefault> & {
+                  -readonly [Key in keyof TValue & keyof TDefault]: DeepMerge<
+                    TValue[Key],
+                    TDefault[Key]
+                  >;
+                }
+          : TValue
+        : TValue extends undefined
+          ? TDefault
+          : TValue;
 
 type DeepMergeMultiple<T extends unknown[]> = T extends [
   infer T1,
