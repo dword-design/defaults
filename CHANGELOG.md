@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/dword-design/defaults/compare/v1.1.2...v1.1.3) (2026-04-28)
+
+
+### Bug Fixes
+
+* simplify type ([99d1c69](https://github.com/dword-design/defaults/commit/99d1c69adc22f8583d920c02b10cc8e9567db841))
+
 ## [1.1.2](https://github.com/dword-design/defaults/compare/v1.1.1...v1.1.2) (2026-02-14)
 
 
