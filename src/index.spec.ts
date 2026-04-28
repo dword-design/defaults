@@ -42,25 +42,25 @@ test.describe('object', () => {
   test('value', () => {
     const result = self({ a: 2 as const }, { a: 1 as const });
     expect(result).toEqual({ a: 2 });
-    expectTypeOf(result).toExtend<{ a: 2 }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: 2 }>();
   });
 
   test('undefined', () => {
     const result = self({ a: undefined }, { a: 1 as const });
     expect(result).toEqual({ a: 1 });
-    expectTypeOf(result).toExtend<{ a: 1 }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: 1 }>();
   });
 
   test('null', () => {
     const result = self({ a: null }, { a: 1 as const });
     expect(result).toEqual({ a: null });
-    expectTypeOf(result).toExtend<{ a: null }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: null }>();
   });
 
   test('nested', () => {
     const result = self({ a: { b: 2 as const } }, { a: { b: 1 as const } });
     expect(result).toEqual({ a: { b: 2 } });
-    expectTypeOf(result).toExtend<{ a: { b: 2 } }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: { b: 2 } }>();
   });
 
   test('tuples', () => {
@@ -88,7 +88,7 @@ test.describe('object', () => {
     );
 
     expect(result).toEqual({ a: 1, b: 2, c: 4 });
-    expectTypeOf(result).toExtend<{ a: 1; b: 2; c: 4 }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: 1; b: 2; c: 4 }>();
   });
 
   test('class instance', () => {
@@ -124,7 +124,7 @@ test.describe('edge cases', () => {
     );
 
     expect(result).toEqual({ a: { b: { c: 1 } } });
-    expectTypeOf(result).toExtend<{ a: { b: { c: 1 } } }>();
+    expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
   });
 
   test('interface and object', () => {
@@ -134,7 +134,7 @@ test.describe('edge cases', () => {
     const obj: Inter = {};
     const result = self(obj, { foo: 'bar' as const });
     expect(result).toEqual({ foo: 'bar' });
-    expectTypeOf(result).toExtend<{ foo: string }>();
+    expectTypeOf(result).toEqualTypeOf<{ foo: string }>();
   });
 });
 

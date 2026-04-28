@@ -1,5 +1,6 @@
 import isPlainObj from 'is-plain-obj';
 import { union } from 'lodash-es';
+import type { SimplifyDeep } from 'type-fest';
 
 type DeepMerge<TValue, TDefault> = TValue extends null
   ? null
@@ -60,12 +61,12 @@ const mergeTwo = <TValue, TDefault>(
   return value as DeepMerge<TValue, TDefault>;
 };
 
-export default <T extends unknown[]>(...args: T): DeepMergeMultiple<T> => {
-  let result: unknown = undefined;
+export default <T extends unknown[]>(...args: T) => {
+  let result: unknown;
 
   for (const current of args.reverse()) {
     result = mergeTwo(current, result);
   }
 
-  return result as DeepMergeMultiple<T>;
+  return result as SimplifyDeep<DeepMergeMultiple<T>>;
 };
