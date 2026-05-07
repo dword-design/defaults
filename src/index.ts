@@ -2,30 +2,48 @@ import isPlainObj from 'is-plain-obj';
 import { union } from 'lodash-es';
 import type { SimplifyDeep } from 'type-fest';
 
-type DeepMerge<TValue, TDefault> = TValue extends null
+type UndefinedToObject<T extends object | undefined> =
+  Exclude<T, undefined> extends infer O extends object
+    ? {
+        -readonly [K in keyof O]:
+          | O[K]
+          | (undefined extends T ? undefined : never);
+      }
+    : never;
+
+type MergeObjects<
+  TValue extends object | undefined,
+  TDefault extends object,
+> = {
+  -readonly [K in
+    | keyof UndefinedToObject<TValue>
+    | keyof TDefault]: K extends keyof UndefinedToObject<TValue>
+    ? K extends keyof TDefault
+      ? DeepMerge<UndefinedToObject<TValue>[K], TDefault[K]>
+      : UndefinedToObject<TValue>[K]
+    : K extends keyof TDefault
+      ? TDefault[K]
+      : never;
+};
+
+export type DeepMerge<TValue, TDefault> = [TValue] extends [null]
   ? null
   : /* eslint-disable @typescript-eslint/no-unsafe-function-type */
-    TValue extends Function
+    [TValue] extends [Function]
     ? /* eslint-enable @typescript-eslint/no-unsafe-function-type */
       TValue
-    : TValue extends readonly unknown[]
-      ? TDefault extends readonly unknown[]
+    : [TValue] extends [readonly unknown[]]
+      ? [TDefault] extends [readonly unknown[]]
         ? [...TDefault, ...TValue]
         : TValue
-      : TValue extends object // TODO: https://github.com/microsoft/TypeScript/issues/29063
-        ? TDefault extends object
-          ? TValue extends TDefault
-            ? TValue
-            : Omit<TValue, keyof TValue & keyof TDefault> &
-                Omit<TDefault, keyof TValue & keyof TDefault> & {
-                  -readonly [Key in keyof TValue & keyof TDefault]: DeepMerge<
-                    TValue[Key],
-                    TDefault[Key]
-                  >;
-                }
-          : TValue
-        : TValue extends undefined
-          ? TDefault
+      : [TValue] extends [object | undefined] // TODO: https://github.com/microsoft/TypeScript/issues/29063
+        ? [TDefault] extends [object]
+          ? MergeObjects<TValue, TDefault>
+          : [undefined] extends [TValue]
+            ? Exclude<TValue, undefined> | TDefault
+            : TValue
+        : [undefined] extends [TValue]
+          ? Exclude<TValue, undefined> | TDefault
           : TValue;
 
 type DeepMergeMultiple<T extends unknown[]> = T extends [
