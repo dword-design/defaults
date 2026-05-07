@@ -143,3 +143,10 @@ test('more than two arguments', () => {
   expect(result).toEqual(1);
   expectTypeOf(result).toEqualTypeOf<number>();
 });
+
+test('object with optional undefined', () => {
+  const foo = { a: 1, b: 1 } as { a: number; b: number } | undefined;
+  const result = self(foo, { a: 2 });
+  expect(result).toEqual({ a: 1, b: 1 });
+  expectTypeOf(result).toEqualTypeOf<{ a: number; b: number | undefined }>();
+});
