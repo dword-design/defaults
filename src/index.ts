@@ -40,17 +40,10 @@ type DeepMerge<TValue, TDefault> = [TValue] extends [null]
             Record<string, unknown> | undefined,
             Record<string, unknown>,
           ] // TODO: https://github.com/microsoft/TypeScript/issues/29063
-        ? [
-            Extract<Exclude<TValue, undefined>, readonly unknown[]>,
-            Extract<TDefault, readonly unknown[]>,
-          ] extends [never, never]
-          ? MergeObjects<
-              Extract<TValue, Record<string, unknown> | undefined>,
-              Extract<TDefault, Record<string, unknown>>
-            >
-          : [undefined] extends [TValue]
-            ? Exclude<TValue, undefined> | TDefault
-            : TValue
+        ? MergeObjects<
+            Extract<TValue, Record<string, unknown> | undefined>,
+            Extract<TDefault, Record<string, unknown>>
+          >
         : [undefined] extends [TValue]
           ? Exclude<TValue, undefined> | TDefault
           : TValue;
