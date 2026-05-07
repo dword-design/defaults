@@ -145,9 +145,7 @@ test('more than two arguments', () => {
 });
 
 test('object with optional undefined', () => {
-  const foo: { a: number; b: number } | undefined =
-    1 === 1 ? { a: 1, b: 1 } : undefined;
-
+  const foo = { a: 1, b: 1 } as { a: number; b: number } | undefined;
   const result = self(foo, { a: 2 });
   expect(result).toEqual({ a: 1, b: 1 });
   expectTypeOf(result).toEqualTypeOf<{ a: number; b: number | undefined }>();
