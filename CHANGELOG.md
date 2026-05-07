@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/dword-design/defaults/compare/v1.1.3...v1.1.4) (2026-05-07)
+
+
+### Bug Fixes
+
+* fix undefined object ([#5](https://github.com/dword-design/defaults/issues/5)) ([194ed39](https://github.com/dword-design/defaults/commit/194ed39611d1f25695ae54825999788ed0a939cc))
+
 ## [1.1.3](https://github.com/dword-design/defaults/compare/v1.1.2...v1.1.3) (2026-04-28)
 
 
