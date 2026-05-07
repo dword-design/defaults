@@ -2,8 +2,8 @@ import isPlainObj from 'is-plain-obj';
 import { union } from 'lodash-es';
 import type { SimplifyDeep } from 'type-fest';
 
-type UndefinedToObject<T extends object | undefined> =
-  Exclude<T, undefined> extends infer O extends object
+type UndefinedToObject<T extends Record<string, unknown> | undefined> =
+  Exclude<T, undefined> extends infer O extends Record<string, unknown>
     ? {
         -readonly [K in keyof O]:
           | O[K]
@@ -12,8 +12,8 @@ type UndefinedToObject<T extends object | undefined> =
     : never;
 
 type MergeObjects<
-  TValue extends object | undefined,
-  TDefault extends object,
+  TValue extends Record<string, unknown> | undefined,
+  TDefault extends Record<string, unknown>,
 > = {
   -readonly [K in
     | keyof UndefinedToObject<TValue>
@@ -36,14 +36,17 @@ type DeepMerge<TValue, TDefault> = [TValue] extends [null]
       ? [TDefault] extends [readonly unknown[]]
         ? [...TDefault, ...TValue]
         : TValue
-      : [TValue, TDefault] extends [object | undefined, object] // TODO: https://github.com/microsoft/TypeScript/issues/29063
+      : [TValue, TDefault] extends [
+            Record<string, unknown> | undefined,
+            Record<string, unknown>,
+          ] // TODO: https://github.com/microsoft/TypeScript/issues/29063
         ? [
             Extract<Exclude<TValue, undefined>, readonly unknown[]>,
             Extract<TDefault, readonly unknown[]>,
           ] extends [never, never]
           ? MergeObjects<
-              Extract<TValue, object | undefined>,
-              Extract<TDefault, object>
+              Extract<TValue, Record<string, unknown> | undefined>,
+              Extract<TDefault, Record<string, unknown>>
             >
           : [undefined] extends [TValue]
             ? Exclude<TValue, undefined> | TDefault

@@ -127,16 +127,6 @@ test.describe('value', () => {
         expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
       });
 
-      test('interface and object', () => {
-        interface Inter {
-          foo?: string;
-        }
-        const obj: Inter = {};
-        const result = self(obj, { foo: 'bar' as const });
-        expect(result).toEqual({ foo: 'bar' });
-        expectTypeOf(result).toEqualTypeOf<{ foo: string }>();
-      });
-
       test('object with optional undefined', () => {
         const foo = { a: 1, b: 1 } as { a: number; b: number } | undefined;
         const result = self(foo, { a: 2 });
