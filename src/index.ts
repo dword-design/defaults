@@ -36,12 +36,11 @@ export type DeepMerge<TValue, TDefault> = [TValue] extends [null]
       ? [TDefault] extends [readonly unknown[]]
         ? [...TDefault, ...TValue]
         : TValue
-      : [TValue] extends [object | undefined] // TODO: https://github.com/microsoft/TypeScript/issues/29063
-        ? [TDefault] extends [object]
-          ? MergeObjects<TValue, TDefault>
-          : [undefined] extends [TValue]
-            ? Exclude<TValue, undefined> | TDefault
-            : TValue
+      : [TValue, TDefault] extends [object | undefined, object] // TODO: https://github.com/microsoft/TypeScript/issues/29063
+        ? MergeObjects<
+            Extract<TValue, object | undefined>,
+            Extract<TDefault, object>
+          >
         : [undefined] extends [TValue]
           ? Exclude<TValue, undefined> | TDefault
           : TValue;
