@@ -26,7 +26,7 @@ type MergeObjects<
       : never;
 };
 
-export type DeepMerge<TValue, TDefault> = [TValue] extends [null]
+type DeepMerge<TValue, TDefault> = [TValue] extends [null]
   ? null
   : /* eslint-disable @typescript-eslint/no-unsafe-function-type */
     [TValue] extends [Function]
@@ -37,10 +37,17 @@ export type DeepMerge<TValue, TDefault> = [TValue] extends [null]
         ? [...TDefault, ...TValue]
         : TValue
       : [TValue, TDefault] extends [object | undefined, object] // TODO: https://github.com/microsoft/TypeScript/issues/29063
-        ? MergeObjects<
-            Extract<TValue, object | undefined>,
-            Extract<TDefault, object>
-          >
+        ? [
+            Extract<Exclude<TValue, undefined>, readonly unknown[]>,
+            Extract<TDefault, readonly unknown[]>,
+          ] extends [never, never]
+          ? MergeObjects<
+              Extract<TValue, object | undefined>,
+              Extract<TDefault, object>
+            >
+          : [undefined] extends [TValue]
+            ? Exclude<TValue, undefined> | TDefault
+            : TValue
         : [undefined] extends [TValue]
           ? Exclude<TValue, undefined> | TDefault
           : TValue;

@@ -147,6 +147,13 @@ test.describe('value', () => {
           b: number | undefined;
         }>();
       });
+
+      test('object with optional undefined, array', () => {
+        const foo = { a: [] } as { a: string[] } | undefined;
+        const result = self(foo, { a: ['123'] });
+        expect(result).toEqual({ a: ['123'] });
+        expectTypeOf(result).toEqualTypeOf<{ a: string[] }>();
+      });
     });
   });
 });
