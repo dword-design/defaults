@@ -26,22 +26,27 @@ type MergeObjects<
       : never;
 };
 
-type DeepMerge<TValue, TDefault> = TValue extends readonly unknown[]
-      ? TDefault extends readonly unknown[]
+type DeepMerge<TValue, TDefault> = [TValue] extends [null]
+  ? null
+  : /* eslint-disable @typescript-eslint/no-unsafe-function-type */
+    [TValue] extends [Function]
+    ? /* eslint-enable @typescript-eslint/no-unsafe-function-type */
+      TValue
+    : [TValue] extends [readonly unknown[]]
+      ? [TDefault] extends [readonly unknown[]]
         ? [...TDefault, ...TValue]
         : TValue
-      : TValue extends Record<string, unknown> | undefined
-        ? TDefault extends Record<string, unknown>
-          ? MergeObjects<
-              TValue,
-              TDefault
-            >
-          : undefined extends TValue
-            ? Exclude<TValue, undefined> | TDefault
-            : TValue
-        : undefined extends TValue
+      : [TValue, TDefault] extends [
+            Record<string, unknown> | undefined,
+            Record<string, unknown>,
+          ] // TODO: https://github.com/microsoft/TypeScript/issues/29063
+        ? MergeObjects<
+            Extract<TValue, Record<string, unknown> | undefined>,
+            Extract<TDefault, Record<string, unknown>>
+          >
+        : [undefined] extends [TValue]
           ? Exclude<TValue, undefined> | TDefault
-          : TValue
+          : TValue;
 
 type DeepMergeMultiple<T extends unknown[]> = T extends [
   infer T1,
@@ -52,7 +57,7 @@ type DeepMergeMultiple<T extends unknown[]> = T extends [
     : T1
   : unknown;
 
-export const mergeTwo = <TValue, TDefault>(
+const mergeTwo = <TValue, TDefault>(
   value: TValue,
   defaultValue: TDefault,
 ): DeepMerge<TValue, TDefault> => {
