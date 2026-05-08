@@ -30,8 +30,8 @@ type DeepMerge<TValue, TDefault> = TValue extends readonly unknown[]
       ? TDefault extends readonly unknown[]
         ? [...TDefault, ...TValue]
         : TValue
-      : [TValue] extends [Record<string, unknown> | undefined]
-        ? [TDefault] extends [Record<string, unknown>]
+      : TValue extends Record<string, unknown> | undefined
+        ? TDefault extends Record<string, unknown>
           ? MergeObjects<
               TValue,
               TDefault
