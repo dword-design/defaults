@@ -92,6 +92,16 @@ type Defaults = {
       ? TDefault
       : never,
   ): DeepMerge<TValue, TDefault> & Record<TValueKey, number>;
+  <
+    TValue extends object,
+    TDefault extends object,
+    TValueKey extends keyof TValue,
+  >(
+    value: TValue,
+    defaultValue: Extract<TValueKey, keyof TDefault> extends never
+      ? TDefault
+      : never,
+  ): DeepMerge<TValue, TDefault> & Pick<TValue, TValueKey>;
   <T extends unknown[]>(...args: T): SimplifyDeep<DeepMergeMultiple<T>>;
 };
 
