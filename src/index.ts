@@ -26,25 +26,23 @@ type MergeObjects<
       : never;
 };
 
-type DeepMerge<TValue, TDefault> = [TValue] extends [null]
+type DeepMerge<TValue, TDefault> = TValue extends null
   ? null
   : /* eslint-disable @typescript-eslint/no-unsafe-function-type */
-    [TValue] extends [Function]
+    TValue extends Function
     ? /* eslint-enable @typescript-eslint/no-unsafe-function-type */
       TValue
-    : [TValue] extends [readonly unknown[]]
-      ? [TDefault] extends [readonly unknown[]]
+    : TValue extends readonly unknown[]
+      ? TDefault extends readonly unknown[]
         ? [...TDefault, ...TValue]
         : TValue
-      : [TValue, TDefault] extends [
-            Record<string, unknown> | undefined,
-            Record<string, unknown>,
-          ] // TODO: https://github.com/microsoft/TypeScript/issues/29063
-        ? MergeObjects<
-            Extract<TValue, Record<string, unknown> | undefined>,
-            Extract<TDefault, Record<string, unknown>>
-          >
-        : [undefined] extends [TValue]
+      : TValue extends Record<string, unknown>
+        ? TDefault extends Record<string, unknown> // TODO: https://github.com/microsoft/TypeScript/issues/29063
+          ? MergeObjects<TValue, TDefault>
+          : undefined extends TValue
+            ? Exclude<TValue, undefined> | TDefault
+            : TValue
+        : undefined extends TValue
           ? Exclude<TValue, undefined> | TDefault
           : TValue;
 

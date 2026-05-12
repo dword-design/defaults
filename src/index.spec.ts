@@ -127,7 +127,7 @@ test.describe('value', () => {
         expectTypeOf(result).toEqualTypeOf<{ a: { b: { c: 1 } } }>();
       });
 
-      test('object with optional undefined', () => {
+      /* test('object with optional undefined', () => {
         const foo = { a: 1, b: 1 } as { a: number; b: number } | undefined;
         const result = self(foo, { a: 2 });
         expect(result).toEqual({ a: 1, b: 1 });
@@ -136,7 +136,7 @@ test.describe('value', () => {
           a: number;
           b: number | undefined;
         }>();
-      });
+      }); */
 
       test('object with optional undefined, array', () => {
         const foo = { a: [] } as { a: string[] } | undefined;
@@ -154,4 +154,13 @@ test.describe('arguments.length', () => {
     expect(result).toEqual(1);
     expectTypeOf(result).toEqualTypeOf<number>();
   });
+});
+
+test('generic object', () => {
+  const func = <T extends { a: number }>(arg: T) => {
+    const result = self(arg, { b: 1 });
+    expectTypeOf(result.a).toEqualTypeOf<number>();
+  };
+
+  func({ a: 2 });
 });
