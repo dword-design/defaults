@@ -3,7 +3,7 @@ import { union } from 'lodash-es';
 import type { SimplifyDeep } from 'type-fest';
 
 type MergeObjects<
-  TValue extends Record<string, unknown> | undefined,
+  TValue extends Record<string, unknown>,
   TDefault extends Record<string, unknown>,
 > = {
   -readonly [K in keyof TValue | keyof TDefault]: K extends keyof TValue
