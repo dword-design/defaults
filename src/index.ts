@@ -86,10 +86,9 @@ type Defaults = {
     TValue extends object,
     TDefault extends object,
     TValueKey extends keyof TValue,
-    TDefaultKey extends keyof TDefault = keyof TDefault,
   >(
     value: TValue & { [K in TValueKey]: number },
-    defaultValue: Extract<TValueKey, TDefaultKey> extends never
+    defaultValue: Extract<TValueKey, keyof TDefault> extends never
       ? TDefault
       : never,
   ): DeepMerge<TValue, TDefault> & Record<TValueKey, number>;
