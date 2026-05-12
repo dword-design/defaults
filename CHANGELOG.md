@@ -1,3 +1,11 @@
+## [1.1.8](https://github.com/dword-design/defaults/compare/v1.1.7...v1.1.8) (2026-05-12)
+
+
+### Bug Fixes
+
+* remove undefinedtoobject ([d7d7b0d](https://github.com/dword-design/defaults/commit/d7d7b0d0d01fcc3af87ea25d12596a7bad8e555c))
+* remove undefinedtoobject ([de012bd](https://github.com/dword-design/defaults/commit/de012bd5692f480a17ef4189e66cd5d036c11459))
+
 ## [1.1.7](https://github.com/dword-design/defaults/compare/v1.1.6...v1.1.7) (2026-05-12)
 
 
