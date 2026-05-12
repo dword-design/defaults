@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/dword-design/defaults/compare/v1.1.6...v1.1.7) (2026-05-12)
+
+
+### Bug Fixes
+
+* revert last change ([3b67c05](https://github.com/dword-design/defaults/commit/3b67c053b2a194445a70864b5adf73b9949596ef))
+
 ## [1.1.6](https://github.com/dword-design/defaults/compare/v1.1.5...v1.1.6) (2026-05-07)
 
 
