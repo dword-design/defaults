@@ -85,7 +85,7 @@ type Defaults = {
   <
     TValue extends object,
     TDefault extends object,
-    TValueKey extends keyof TValue = keyof TValue,
+    TValueKey extends keyof TValue,
     TDefaultKey extends keyof TDefault = keyof TDefault,
   >(
     value: TValue & { [K in TValueKey]: number },
