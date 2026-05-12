@@ -2,25 +2,14 @@ import isPlainObj from 'is-plain-obj';
 import { union } from 'lodash-es';
 import type { SimplifyDeep } from 'type-fest';
 
-type UndefinedToObject<T extends Record<string, unknown> | undefined> =
-  Exclude<T, undefined> extends infer O extends Record<string, unknown>
-    ? {
-        -readonly [K in keyof O]:
-          | O[K]
-          | (undefined extends T ? undefined : never);
-      }
-    : never;
-
 type MergeObjects<
   TValue extends Record<string, unknown> | undefined,
   TDefault extends Record<string, unknown>,
 > = {
-  -readonly [K in
-    | keyof UndefinedToObject<TValue>
-    | keyof TDefault]: K extends keyof UndefinedToObject<TValue>
+  -readonly [K in keyof TValue | keyof TDefault]: K extends keyof TValue
     ? K extends keyof TDefault
-      ? DeepMerge<UndefinedToObject<TValue>[K], TDefault[K]>
-      : UndefinedToObject<TValue>[K]
+      ? DeepMerge<TValue[K], TDefault[K]>
+      : TValue[K]
     : K extends keyof TDefault
       ? TDefault[K]
       : never;
