@@ -82,10 +82,17 @@ const mergeTwo = <TValue, TDefault>(
 };
 
 type Defaults = {
-  <TValue extends { a: number }, TDefault extends { b: number }>(
-    value: TValue,
-    defaultValue: keyof TDefault extends 'b' ? TDefault : never,
-  ): DeepMerge<TValue, TDefault> & { a: number };
+  <
+    TValue extends object,
+    TDefault extends object,
+    TValueKey extends keyof TValue = keyof TValue,
+    TDefaultKey extends keyof TDefault = keyof TDefault,
+  >(
+    value: TValue & { [K in TValueKey]: number },
+    defaultValue: Extract<TValueKey, TDefaultKey> extends never
+      ? TDefault
+      : never,
+  ): DeepMerge<TValue, TDefault> & Record<TValueKey, number>;
   <T extends unknown[]>(...args: T): SimplifyDeep<DeepMergeMultiple<T>>;
 };
 
