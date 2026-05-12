@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { expectTypeOf } from 'expect-type';
 
-import self, { mergeTwo, type MergeObjects } from '.';
+import self from '.';
 
 test.describe('value', () => {
   test.describe('primitive', () => {
@@ -129,7 +129,7 @@ test.describe('value', () => {
 
       test('object with optional undefined', () => {
         const foo = { a: 1, b: 1 } as { a: number; b: number } | undefined;
-        const result = mergeTwo(foo, { a: 2 });
+        const result = self(foo, { a: 2 });
         expect(result).toEqual({ a: 1, b: 1 });
 
         expectTypeOf(result).toEqualTypeOf<{
@@ -157,9 +157,10 @@ test.describe('arguments.length', () => {
 });
 
 test('generic object', () => {
-  const func = <T extends { a: number }> (arg: T) => {
-    const result = mergeTwo(arg, { b: 1 });
+  const func = <T extends { a: number }>(arg: T) => {
+    const result = self(arg, { b: 1 });
     expectTypeOf(result.a).toEqualTypeOf<number>();
-  }
+  };
+
   func({ a: 2 });
 });
