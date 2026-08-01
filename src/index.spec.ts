@@ -149,6 +149,18 @@ test.describe('value', () => {
 });
 
 test.describe('arguments.length', () => {
+  test('0', () => {
+    const result = self();
+    expect(result).toBeUndefined();
+    expectTypeOf(result).toEqualTypeOf<undefined>();
+  });
+
+  test('1', () => {
+    const result = self({ a: 1 as const });
+    expect(result).toEqual({ a: 1 });
+    expectTypeOf(result).toEqualTypeOf<{ a: 1 }>();
+  });
+
   test('> 2', () => {
     const result = self(1, 'a', null);
     expect(result).toEqual(1);

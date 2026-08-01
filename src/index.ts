@@ -35,14 +35,13 @@ type DeepMerge<TValue, TDefault> = TValue extends null
           ? Exclude<TValue, undefined> | TDefault
           : TValue;
 
-type DeepMergeMultiple<T extends unknown[]> = T extends [
-  infer T1,
-  ...infer TRest,
-]
-  ? TRest extends unknown[]
-    ? DeepMerge<T1, DeepMergeMultiple<TRest>>
-    : T1
-  : unknown;
+type DeepMergeMultiple<T extends unknown[]> = T extends []
+  ? undefined
+  : T extends [infer T1]
+    ? T1
+    : T extends [infer T1, ...infer TRest]
+      ? DeepMerge<T1, DeepMergeMultiple<TRest>>
+      : never;
 
 const mergeTwo = <TValue, TDefault>(
   value: TValue,
