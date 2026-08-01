@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/dword-design/defaults/compare/v1.1.8...v1.1.9) (2026-08-01)
+
+
+### Bug Fixes
+
+* foo ([ae22101](https://github.com/dword-design/defaults/commit/ae2210185c9ddc3cca1592b4b5b8316977bc3d86))
+
 ## [1.1.8](https://github.com/dword-design/defaults/compare/v1.1.7...v1.1.8) (2026-05-12)
 
 
