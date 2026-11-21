@@ -31,7 +31,7 @@
   "dependencies": {
     "is-plain-obj": "^4.1.0",
     "lodash-es": "^4.17.21",
-    "type-fest": "^5.6.0"
+    "type-fest": "^6.0.0"
   },
   "devDependencies": {
     "@dword-design/base": "^16.0.8",
